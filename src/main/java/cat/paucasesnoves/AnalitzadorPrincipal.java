@@ -38,7 +38,11 @@ public class AnalitzadorPrincipal {
             out.write(texto);
             out.flush();
             out.close();
-            BufferedReader entrada = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            try(BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()))){
+                String resposta = in.readLine();
+                IO.println("Errores encontrados: "+ resposta);
+            }
+            
             p.waitFor();
             
         }catch (IOException e) {
