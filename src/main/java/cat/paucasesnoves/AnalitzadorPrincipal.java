@@ -5,9 +5,11 @@
 package cat.paucasesnoves;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 
 /**
  *
@@ -32,8 +34,8 @@ public class AnalitzadorPrincipal {
         try{
             Process p = pb.start();
         
-            OutputStream out = p.getOutputStream();
-            out.write((texto).getBytes());
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
+            out.write(texto);
             out.flush();
             out.close();
             BufferedReader entrada = new BufferedReader(new InputStreamReader(p.getInputStream()));
