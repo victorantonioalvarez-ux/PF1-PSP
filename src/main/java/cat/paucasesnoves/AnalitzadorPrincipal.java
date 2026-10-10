@@ -10,4 +10,14 @@ package cat.paucasesnoves;
  */
 public class AnalitzadorPrincipal {
     
+    public static void main(String[] args){
+        
+        ProcessBuilder pb = new ProcessBuilder(
+                "java",
+                "-cp",
+                System.getProperty("java.class.path"),
+                "procesos.FiltreLog"
+            );
+        
+    }
 }
