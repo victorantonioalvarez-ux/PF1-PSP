@@ -4,7 +4,9 @@
  */
 package cat.paucasesnoves;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 
 /**
@@ -28,16 +30,19 @@ public class AnalitzadorPrincipal {
                 "procesos.FiltreLog"
             );
         try{
-            Process fill = pb.start();
+            Process p = pb.start();
         
-        OutputStream out = fill.getOutputStream();
-        out.write((texto).getBytes());
-        out.flush();
-        out.close();
-        
-        
+            OutputStream out = p.getOutputStream();
+            out.write((texto).getBytes());
+            out.flush();
+            out.close();
+            BufferedReader entrada = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            p.waitFor();
+            
         }catch (IOException e) {
             System.err.println("ERROR: de E/S: "+ e.getMessage());
+        } catch (InterruptedException ex) {
+            System.getLogger(AnalitzadorPrincipal.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
     }
 }
