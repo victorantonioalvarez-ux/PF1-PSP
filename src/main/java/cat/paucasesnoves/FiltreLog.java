@@ -15,22 +15,23 @@ import java.io.InputStreamReader;
 public class FiltreLog {
     
     public static void main(String[] args){
-        String palabraClave = "ERROR";
+        String paraulaClau = "ERROR";
         int comptador = 0;
         
         try(BufferedReader br = new BufferedReader(new InputStreamReader(System.in))){
-            String linea;
-            while((linea = br.readLine()) != null){
-                if(linea.contains(palabraClave)){
+            String linia;
+            while((linia = br.readLine()) != null){
+                if(linia.contains(paraulaClau)){
                     comptador++;
                 }
             }
             
-        } catch (IOException e) {
-            System.err.println("ERROR: text buit");
+        } catch (IOException ex) { 
+            System.err.println("La lectura ha fallat"+ex);
             System.exit(1);
         }
-        IO.print(comptador);
+        System.out.println(comptador);
+        System.exit(0);
     }
     
 }

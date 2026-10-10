@@ -8,7 +8,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
 /**
@@ -16,39 +15,43 @@ import java.io.OutputStreamWriter;
  * @author v
  */
 public class AnalitzadorPrincipal {
-    
-    public static void main(String[] args){
-        
-        String texto = "INFO Servidor iniciado\n"
-                     + "ERROR Conexion perdida\n"
-                     + "WARNING Disco al 85%\n"
-                     + "Error Timeout\n"
-                     + "INFO sesion cerrada";
-        
+
+    public static void main(String[] args) {
+
+        String texto = "INFO Servidor iniciat\n"
+                + "ERROR Conexio perduda\n"
+                + "WARNING Disco al 85%\n"
+                + "ERROR Timeout\n"
+                + "INFO sesio tancada";
+
         ProcessBuilder pb = new ProcessBuilder(
                 "java",
                 "-cp",
                 System.getProperty("java.class.path"),
-                "procesos.FiltreLog"
-            );
-        try{
+                "cat.paucasesnoves.FiltreLog"
+        );
+        try {
             Process p = pb.start();
-        
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
-            out.write(texto);
-            out.flush();
-            out.close();
-            try(BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()))){
-                String resposta = in.readLine();
-                IO.println("Errores encontrados: "+ resposta);
+
+            try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()))) {
+
+                out.write(texto);
+                out.flush();
+                out.close();
             }
-            
-            p.waitFor();
-            
-        }catch (IOException e) {
-            System.err.println("ERROR: de E/S: "+ e.getMessage());
-        } catch (InterruptedException ex) {
-            System.getLogger(AnalitzadorPrincipal.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
+
+                String resposta = in.readLine();
+                System.out.println("Errors trobats: " + resposta);
+            }
+            int codi = p.waitFor();
+            System.out.println("El fill ha finalitzat amb el codi: " + codi);
+        } catch (IOException e) {
+            System.err.println("ERROR: de E/S: " + e.getMessage());
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.err.println("proces interromput");
         }
     }
 }
