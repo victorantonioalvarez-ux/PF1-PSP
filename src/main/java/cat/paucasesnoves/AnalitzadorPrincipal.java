@@ -30,6 +30,7 @@ public class AnalitzadorPrincipal {
                 System.getProperty("java.class.path"),
                 "cat.paucasesnoves.FiltreLog"
         );
+        
         try {
             Process p = pb.start();
 
