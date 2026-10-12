@@ -13,25 +13,33 @@ import java.io.InputStreamReader;
  * @author v
  */
 public class FiltreLog {
-    
-    public static void main(String[] args){
+
+    public static void main(String[] args) {
         String paraulaClau = "ERROR";
         int comptador = 0;
-        
-        try(BufferedReader br = new BufferedReader(new InputStreamReader(System.in))){
+        boolean hiHaContingut = false;
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
             String linia;
-            while((linia = br.readLine()) != null){
-                if(linia.contains(paraulaClau)){
+            while ((linia = br.readLine()) != null) {
+                if (!linia.isBlank()) {
+                    hiHaContingut = true;
+                }
+                if (linia.contains(paraulaClau)) {
                     comptador++;
                 }
+
             }
-            
-        } catch (IOException ex) { 
-            System.err.println("La lectura ha fallat"+ex);
+
+        } catch (IOException ex) {
+            System.err.println("La lectura ha fallat: " + ex);
+            System.exit(1);
+        }
+        if (hiHaContingut == false) {
+            System.err.println("Error: Text buit");
             System.exit(1);
         }
         System.out.println(comptador);
         System.exit(0);
     }
-    
+
 }
