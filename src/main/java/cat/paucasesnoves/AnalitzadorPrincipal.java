@@ -9,6 +9,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.File;
 
 /**
  *
@@ -32,6 +33,7 @@ public class AnalitzadorPrincipal {
         );
         
         try {
+            pb.redirectError(new File("errors_filtre.log"));
             Process p = pb.start();
 
             try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()))) {
@@ -44,10 +46,20 @@ public class AnalitzadorPrincipal {
             try (BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
 
                 String resposta = in.readLine();
-                System.out.println("Errors trobats: " + resposta);
+                if(resposta != null){
+                    System.out.println("Errors trobats: " + resposta);
+                }else{
+                    System.out.println("No s'ha rebut cap resultat del fill");
+                }
+                
             }
-            int codi = p.waitFor();
-            System.out.println("El fill ha finalitzat amb el codi: " + codi);
+            p.waitFor();
+            int codi = p.exitValue();
+            if(codi == 0){
+                System.out.println("El fill ha finalitzat sense errors");
+            }else{
+                System.out.println("El fill ha finalitzat amb errors");
+            }
         } catch (IOException e) {
             System.err.println("ERROR: de E/S: " + e.getMessage());
         } catch (InterruptedException e) {
