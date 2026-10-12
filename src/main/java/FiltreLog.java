@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package cat.paucasesnoves;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,7 +15,7 @@ import java.io.InputStreamReader;
 public class FiltreLog {
 
     public static void main(String[] args) {
-        String paraulaClau = "ERROR";
+        String paraulaClau = (args.length > 0) ? args[0] : "ERROR";
         int comptador = 0;
         boolean hiHaContingut = false;
         try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
