@@ -20,21 +20,24 @@ public class AnalitzadorPrincipal {
     public static void main(String[] args) {
 
         String texto = "INFO Servidor iniciat\n"
+                + "WARNING Disco al 95%\n"
                 + "ERROR Conexio perduda\n"
-                + "WARNING Disco al 85%\n"
+                + "WARNING Disco al 90%\n"
                 + "ERROR Timeout\n"
+                + "WARNING Disco al 85%\n"
                 + "INFO sesio tancada";
-
+               
         ProcessBuilder pb = new ProcessBuilder(
                 "java",
                 "-cp",
                 System.getProperty("java.class.path"),
                 "FiltreLog"
-        );
+        ); 
         
         try {
-            pb.redirectError(new File("errors_filtre.log"));
-            Process p = pb.start();
+            
+            Process perr = llancarFiltre("ERROR");
+            Process pwrn = llancarFiltre("WARNING");
 
             try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()))) {
 
@@ -66,5 +69,16 @@ public class AnalitzadorPrincipal {
             Thread.currentThread().interrupt();
             System.err.println("proces interromput");
         }
+    }
+    
+    private static Process llancarFiltre(String paraula) throws IOException{
+        ProcessBuilder pb = new ProcessBuilder(
+                "java",
+                "-cp",
+                System.getProperty("java.class.path"),
+                "FiltreLog", paraula
+        );
+        pb.redirectError(ProcessBuilder.Redirect.appendTo(new File("errors_filtre.log")));
+        return pb.start();
     }
 }
