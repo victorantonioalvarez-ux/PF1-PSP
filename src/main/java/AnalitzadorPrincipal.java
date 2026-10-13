@@ -19,7 +19,7 @@ public class AnalitzadorPrincipal {
 
     public static void main(String[] args) {
 
-        String texto = "INFO Servidor iniciat\n"
+        String text = "INFO Servidor iniciat\n"
                 + "WARNING Disco al 95%\n"
                 + "ERROR Conexio perduda\n"
                 + "WARNING Disco al 90%\n"
@@ -38,13 +38,9 @@ public class AnalitzadorPrincipal {
             
             Process perr = llancarFiltre("ERROR");
             Process pwrn = llancarFiltre("WARNING");
-
-            try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()))) {
-
-                out.write(texto);
-                out.flush();
-                out.close();
-            }
+            
+            enviarText(perr, text);
+            enviarText(pwrn, text);
 
             try (BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
 
@@ -80,5 +76,12 @@ public class AnalitzadorPrincipal {
         );
         pb.redirectError(ProcessBuilder.Redirect.appendTo(new File("errors_filtre.log")));
         return pb.start();
+    }
+    private static void enviarText(Process p, String text) throws IOException{
+        try(BufferedWriter out = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()))){
+            out.write(text);
+            out.flush();
+            out.close();
+        }
     }
 }
